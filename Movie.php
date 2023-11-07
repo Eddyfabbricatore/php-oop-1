@@ -1,20 +1,14 @@
 <?php
 
-  class Movie{
-    public $name;
-    public $year;
-    public $duration;
-    public $image;
+  class Movie extends Production{
+    public $published_year;
+    public $running_timedurata;
 
-    public function __construct(string $_name, int $_year, float $_duration, Media $_image = null){
-      $this->name = $_name;
-      $this->year = $_year;
-      $this->duration = $_duration;
-      $this->image = $_image;
-    }
-
-    public function setImage(Media $_image) {
-      $this->image = $_image;
+    public function __construct(string $_name, Media $_image = null, int $_published_year, float $_running_timedurata){
+      $this->published_year = $_published_year;
+      $this->running_timedurata = $_running_timedurata;
+  
+      parent::__construct( $_name, $_image);
     }
   }
 
