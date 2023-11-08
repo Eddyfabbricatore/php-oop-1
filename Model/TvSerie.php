@@ -12,7 +12,12 @@
       $this->number_of_episodes = $_number_of_episodes;
       $this->number_of_seasons = $_number_of_seasons;
   
-      parent::__construct( $_name, $_image);
+      parent::__construct($_name, $_image);
+    }
+
+    public function getInfo(){
+      $tvSerieInfo = parent::getInfo();
+      return "$tvSerieInfo Data uscita prima stagione: $this->aired_from_year <br> Data uscita ultima stagione: $this->aired_to_year <br> Numero di episodi totale: $this->number_of_episodes <br> Numero di stagioni: $this->number_of_seasons";
     }
   }
 

@@ -1,10 +1,15 @@
 <?php
 
-  require_once __DIR__ . '/Production.php';
-  require_once __DIR__ . '/Movie.php';
-  require_once __DIR__ . '/TvSerie.php';
-  require_once __DIR__ . '/Media.php';
-  require_once __DIR__ . '/db.php';
+  try{
+    require_once __DIR__ . '/Traits/YearOfPublication.php';
+    require_once __DIR__ . '/Model/Production.php';
+    require_once __DIR__ . '/Model/Movie.php';
+    require_once __DIR__ . '/Model/TvSerie.php';
+    require_once __DIR__ . '/Model/Media.php';
+    require_once __DIR__ . '/db/db.php';
+  }catch(Exception $e){
+    $error = $e->getMessage();
+  }
 
 ?>
 
@@ -18,47 +23,42 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato&family=Montserrat:wght@400;500&family=Open+Sans:wght@400;500&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="style.css">
 
   <title>PHP OOP</title>
 </head>
 <body>
   <div class="container my-5">
-    <h1>Film</h1>
+    <?php if(isset($error)): ?>
+      <div class="alert alert-danger" role="alert">
+        <?php echo $error ?>
+      </div>
 
-    <div class="film d-flex">
-      <?php foreach($movies as $movie): ?>
-        <div class="card ms-1 me-1">
-          <img src="img/<?php echo $movie->image->file_name ?>" class="card-img-top" alt="<?php echo $movie->image->name ?>">
+    <?php else: ?>
+      <h1 class="text-center mb-3">Raccolta di Film e SerieTv</h1>
 
-          <div class="card-body">
-            <h5 class="card-title">Titolo: <?php echo $movie->name  ?></h5>
-            <p class="card-text">Anno di uscita: <?php echo $movie->published_year ?></p>
-            <p class="card-text">Durata: <?php echo $movie->running_timedurata ?></p>
+      <div class="row d-flex">
+        <?php foreach($collections as $collection): ?>
+          <div class="col-3 mb-3">
+            <div class="card">
+              <div class="card-img">
+                <img src="img/<?php echo $collection->image->file_name ?>" alt="<?php echo $collection->image->name ?>">
+              </div>
+
+              <div class="card-body">
+                <p class="card-text"><?php echo $collection->getInfo() ?></p>
+              </div>
+            </div>
           </div>
-        </div>
-      <?php endforeach; ?>
-    </div>
-  </div>
-
-  <div class="container my-5">
-    <h1>Serie Tv</h1>
-
-    <div class="serie d-flex">
-      <?php foreach($series as $serie): ?>
-        <div class="card ms-1 me-1">
-          <img src="img/<?php echo $serie->image->file_name ?>" class="card-img-top" alt="<?php echo $serie->image->name ?>">
-
-          <div class="card-body">
-            <h5 class="card-title">Titolo: <?php echo $serie->name  ?></h5>
-            <p class="card-text">Anno di uscita prima stagione: <?php echo $serie->aired_from_year ?></p>
-            <p class="card-text">Anno di uscita ultima stagione: <?php echo $serie->aired_to_year ?></p>
-            <p class="card-text">Numero di episodi: <?php echo $serie->number_of_episodes ?></p>
-            <p class="card-text">Numeri di stagioni: <?php echo $serie->number_of_seasons ?></p>
-          </div>
-        </div>
-      <?php endforeach; ?>
-    </div>
+        <?php endforeach; ?>
+      </div>
+    <?php endif; ?>
   </div>
 </body>
 </html>
